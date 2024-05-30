@@ -1,0 +1,29 @@
+#!/bin/sh
+
+echo "Warning: This script will wipe the drive you are targeting"
+echo 
+echo "Do you want to proceed? (Y/n)"
+read choice
+
+choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]')
+
+if [ "$choice" = "n" ]; then
+    echo "Operation canceled. Exiting..."
+    exit 1
+fi
+
+echo "Enter your laptop's password"
+echo
+sudo echo
+
+echo "Please enter the path for your file"
+read path
+echo
+echo "Please enter the USB drive path you can find it by doing lsblk"
+read usbdrivepath
+
+sudo dd if=$path of=$usbdrivepath bs=4M status=progress && sync
+
+echo ""
+echo "========= SUCCESS ==========="
+echo ""
