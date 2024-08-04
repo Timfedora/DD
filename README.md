@@ -6,7 +6,7 @@ This script allows you to write files to your flash drive using `dd`.
 
 Make sure you have the necessary permissions to run these commands.
 
-## Installation
+## Runing
 
 1. **Clone the repository**:
 
