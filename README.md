@@ -8,7 +8,7 @@ Make sure you have the necessary permissions to run these commands.
 
 ## Runing
 
-1. **Clone the repository**:
+ **Clone the repository**:
 
 1.     git clone https://github.com/Timfedora/DD.git
 2.     cd DD
