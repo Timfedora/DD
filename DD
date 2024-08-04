@@ -2,43 +2,68 @@
 
 clear
 
-echo "This is the DD script"
+echo "=== Welcome to the DD Script ==="
+echo "This script requires root privileges to operate."
 
-echo "This script requires root privileges to eject drives"
-
-# Prompt for password
-echo "Enter your laptop's password"
+# Prompt for password to gain sudo privileges
+echo "Please enter your password to continue:"
 sudo -v
 
-echo "Warning: This script will wipe the drive you are targeting"
+echo "Warning: This script will wipe the target drive!"
 echo "Do you want to proceed? (Y/n)"
 read -r choice
 
+# Convert input to lowercase
 choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]')
 
-if [ "$choice" = "n" ]; then
+if [ "$choice" != "y" ]; then
     echo "Operation canceled. Exiting..."
     exit 1
 fi
 
-echo "Please enter the path for your file"
-read -r path
-echo
+echo "Please enter the full path to your source file:"
+read -r source_file
 
-lsblk -o NAME
+# Check if the source file exists
+if [ ! -f "$source_file" ]; then
+    echo "Error: Source file '$source_file' does not exist."
+    exit 1
+fi
+
+# List block devices
+lsblk -o NAME,SIZE,TYPE,MOUNTPOINT
 
 echo "Please enter the USB drive path (e.g., /dev/sdX):"
-read -r usbdrivepath
+read -r usb_drive_path
 
-# Check if the USB drive path exists
-if [ ! -b "$usbdrivepath" ]; then
-    echo "Error: USB drive path '$usbdrivepath' does not exist or is not a block device."
+# Check if the USB drive path exists and is a block device
+if [ ! -b "$usb_drive_path" ]; then
+    echo "Error: USB drive path '$usb_drive_path' does not exist or is not a block device."
+    exit 1
+fi
+
+echo "Are you sure you want to write '$source_file' to '$usb_drive_path'? This will erase all data on the target drive! (Y/n)"
+read -r confirm
+
+# Convert input to lowercase
+confirm=$(echo "$confirm" | tr '[:upper:]' '[:lower:]')
+
+if [ "$confirm" != "y" ]; then
+    echo "Operation canceled. Exiting..."
     exit 1
 fi
 
 # Perform the DD operation with progress and sync
-sudo dd if="$path" of="$usbdrivepath" bs=4M status=progress && sync
+echo "Writing '$source_file' to '$usb_drive_path'..."
+sudo dd if="$source_file" of="$usb_drive_path" bs=4M status=progress conv=fsync
 
-echo ""
-echo "========= SUCCESS ==========="
-echo ""
+if [ $? -eq 0 ]; then
+    echo ""
+    echo "========= SUCCESS ==========="
+    echo "The operation completed successfully."
+else
+    echo ""
+    echo "========= FAILURE ==========="
+    echo "An error occurred during the operation."
+fi
+
