@@ -1,15 +1,16 @@
-This script uses dd to right files on your flash drive.
+# DD Script
 
-To run it do this.
+This script allows you to write files to your flash drive using `dd`.
 
- ```sh
-   git clone https://github.com/Timfedora/Manger.git
-```sh
+## Prerequisites
 
-chmod +x DD.sh
-```sh
-cd DD
-```sh
+Make sure you have the necessary permissions to run these commands.
 
-./DD
-```sh
+## Installation
+
+1. **Clone the repository**:
+
+   ```sh
+   git clone https://github.com/Timfedora/DD.git
+  ```sh
+
