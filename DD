@@ -3,13 +3,14 @@
 clear
 
 echo "=== Welcome to the DD Script ==="
+echo
 echo "This script requires root privileges to operate."
 
-# Prompt for password to gain sudo privileges
 echo "Please enter your password to continue:"
 sudo -v
 
 echo "Warning: This script will wipe the target drive!"
+echo
 echo "Do you want to proceed? (Y/n)"
 read -r choice
 
