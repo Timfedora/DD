@@ -13,4 +13,7 @@ Make sure you have the necessary permissions to run these commands.
    ```sh
    git clone https://github.com/Timfedora/DD.git
   ```sh
+cd DD
+```sh
+chmod +x DD.sh
 
